@@ -1,5 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const ejsMate = require("ejs-mate");
+const path = require("path");
+
+const Campground = require("./models/campground");
 
 mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp")
     .then(() => {
@@ -12,8 +16,12 @@ mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp")
 
 const app = express();
 
+app.engine("ejs", ejsMate);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 app.get("/", (req, res) => {
-    res.send("home");
+    res.render("index");
 });
 
 app.get("/campgrounds", (req, res) => {
