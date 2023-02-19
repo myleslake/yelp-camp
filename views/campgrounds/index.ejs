@@ -1,7 +1,11 @@
 <% layout("shared/layout") %>
 <div class="container">
+    <div class="mb-3">
+        <h1 class="d-inline">All Campgrounds</h1>
+        <a class="btn btn-primary float-end" href="/campgrounds/new">Add Campground</a>
+    </div>
     <% for(let campground of campgrounds) { %>
-        <div class="card">
+        <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
                     <img src="<%= campground.image %>" class="img-fluid rounded-start" 
@@ -9,14 +13,12 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <span class="card-title"><%= campground.title %></span>
+                        <h2 class="card-title h5"><%= campground.title %></h2>
+                        <p class="card-text"><%= campground.description %></p>
                         <p class="card-text">
-                            <%= campground.description %>
+                            <small class="text-muted"><%= campground.location %></small>
                         </p>
-                        <p class="card-text">
-                            <%= campground.location %>
-                        </p>
-                        <a href="#" class="btn btn-primary">View <%= campground.title %></a>
+                        <a href="/campgrounds/<% campground.id %>" class="btn btn-primary">View <%= campground.title %></a>
                     </div>
                 </div>
             </div>
