@@ -52,7 +52,9 @@ app.post("/campgrounds", async (req, res) => {
 
 // Edit
 app.get("/campgrounds/:id/edit", async (req, res) => {
-    const campground = Campground.findById(req.params.id);
+    const campground = await Campground.findById(req.params.id);
+    console.log(req.params.id);
+    console.log(campground);
     res.render("campgrounds/edit", { campground })
 });
 
