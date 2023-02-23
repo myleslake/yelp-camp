@@ -68,10 +68,21 @@ app.put("/campgrounds/:id", async (req, res) => {
 });
 
 // Delete
-app.delete("/campgrounds/:id", async (req, res) => {
+app.delete("/campgrounds/:id", catchAsync(async (req, res, next) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect("/campgrounds");
+}));
+
+function catchAsync(func) {
+    return function (req, res, next) {
+        func(req, res, next).catch(err => next(err));
+    }
+}
+
+app.use((err, req, res, next) => {
+    const { status = 500, message = "An unexpected error has occurred." } = err;
+    res.status(status).send(message);
 });
 
 app.listen(3000, () => {
