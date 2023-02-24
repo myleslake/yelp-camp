@@ -39,7 +39,7 @@ app.get("/campgrounds/:id", async (req, res) => {
 });
 
 // New
-app.get("/camgrounds/new", async (req, res) => {
+app.get("/camgrounds/new", (req, res) => {
     res.render("campgrounds/new");
 });
 
@@ -53,8 +53,6 @@ app.post("/campgrounds", async (req, res) => {
 // Edit
 app.get("/campgrounds/:id/edit", async (req, res) => {
     const campground = await Campground.findById(req.params.id);
-    console.log(req.params.id);
-    console.log(campground);
     res.render("campgrounds/edit", { campground })
 });
 
