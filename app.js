@@ -5,15 +5,15 @@ const methodOverride = require("method-override");
 const path = require("path");
 const catchAsync = require("./utils/catchAsync");
 const AppError = require("./utils/AppError");
-const { campgroundSchema } = require("./utils/schemaValidation")
+const { campgroundSchema } = require("./utils/schemaValidation");
 const Campground = require("./models/campground");
 
 mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp")
     .then(() => {
-        console.log("CONNECTION OPEN!")
+        console.log("CONNECTION OPEN!");
     })
-    .catch(err => {
-        console.log("ERROR: ")
+    .catch((err) => {
+        console.log("ERROR: ");
         console.log(err);
     });
 
@@ -25,17 +25,17 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 
 const validateCampground = (req, res, next) => {
-    const {error} = campgroundSchema.validate(req.body);
-    if(error) {
-        const msg = error.details.map(el => el.message).join(",");
+    const { error } = campgroundSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map((el) => el.message).join(",");
         throw new AppError(400, msg);
     } else {
         next();
     }
-}
+};
 
 // Home
 app.get("/", (req, res) => {
@@ -69,16 +69,18 @@ app.post("/campgrounds", validateCampground, catchAsync(async (req, res) => {
 // Edit
 app.get("/campgrounds/:id/edit", catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
-    if(!campground) {
+    if (!campground) {
         throw new AppError(500, "Could not find campground to be updated.");
     }
-    res.render("campgrounds/edit", { campground })
+    res.render("campgrounds/edit", { campground });
 }));
 
 // Update
 app.put("/campgrounds/:id", validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+    const campground = await Campground.findByIdAndUpdate(id, {
+        ...req.body.campground,
+    });
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
@@ -95,10 +97,10 @@ app.all("*", (req, res, next) => {
 
 app.use((err, req, res, next) => {
     const { status = 500 } = err;
-    if(!err.message) err.message = "An unexpected error has occurred.";
+    if (!err.message) err.message = "An unexpected error has occurred.";
     res.status(status).render("error", { err });
 });
 
 app.listen(3000, () => {
-    console.log("Serving on port 3000...")
+    console.log("Serving on port 3000...");
 });

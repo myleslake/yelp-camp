@@ -1,26 +1,26 @@
 <% layout("shared/layout") %>
-    <div class="container" style="max-width: 675px;">
+    <div class="container" style="max-width: 675px">
         <h1>New Campground</h1>
         <form class="form-validate mb-3" action="/campgrounds" method="POST" novalidate>
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="campground[title]" required>
+                <input type="text" class="form-control" id="title" name="campground[title]" required />
                 <div class="invalid-feedback">Please provide a title</div>
             </div>
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" name="campground[location]" required>
+                <input type="text" class="form-control" id="location" name="campground[location]" required />
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image URL</label>
-                <input type="text" class="form-control" id="image" name="campground[image]" required>
+                <input type="text" class="form-control" id="image" name="campground[image]" required />
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text">$</span>
                     <input type="text" class="form-control" id="price" aria-label="Price (to the nearest dollar)"
-                        name="campground[price]" required>
+                        name="campground[price]" required />
                 </div>
             </div>
             <div class="mb-3">

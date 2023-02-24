@@ -1,7 +1,11 @@
 <% layout("shared/layout") %>
-<div class="container">
-    <div class="alert alert-danger">
-        <h1 class="h4"><%= err.message %></h1>
-        <p><%= err.stack %> </p>
+    <div class="container">
+        <div class="alert alert-danger">
+            <h1 class="h4">
+                <%= err.message %>
+            </h1>
+            <p>
+                <%= err.stack %>
+            </p>
+        </div>
     </div>
-</div>
