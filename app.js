@@ -76,6 +76,15 @@ app.get("/campgrounds/:id/edit", catchAsync(async (req, res) => {
     res.render("campgrounds/edit", { campground });
 }));
 
+// Add review 
+app.post("/campgrounds/:id/reviews", catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+}));
+
 // Update
 app.put("/campgrounds/:id", validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
