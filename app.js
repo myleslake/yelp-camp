@@ -7,6 +7,7 @@ const catchAsync = require("./utils/catchAsync");
 const AppError = require("./utils/AppError");
 const { campgroundSchema } = require("./utils/schemaValidation");
 const Campground = require("./models/campground");
+const Review = require("./models/review");
 
 mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp")
     .then(() => {
@@ -55,7 +56,7 @@ app.get("/campgrounds/new", (req, res) => {
 
 // Show/View/Details
 app.get("/campgrounds/:id", catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findById(req.params.id).populate("reviews");
     res.render("campgrounds/show", { campground });
 }));
 
