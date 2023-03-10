@@ -5,7 +5,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const catchAsync = require("./utils/catchAsync");
 const AppError = require("./utils/AppError");
-const { campgroundSchema } = require("./utils/schemaValidation");
+const { campgroundSchema, reviewSchema } = require("./utils/schemaValidation");
 const Campground = require("./models/campground");
 const Review = require("./models/review");
 
@@ -31,7 +31,18 @@ app.use(methodOverride("_method"));
 const validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body);
     if (error) {
-        const msg = error.details.map((el) => el.message).join(",");
+        const msg = error.details.map(el => el.message).join(",");
+        throw new AppError(400, msg);
+    } else {
+        next();
+    }
+};
+
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+
+    if (error) {
+        const msg = error.details.map(el => el.message).join(",");
         throw new AppError(400, msg);
     } else {
         next();
@@ -57,9 +68,6 @@ app.get("/campgrounds/new", (req, res) => {
 // Show/View/Details
 app.get("/campgrounds/:id", catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate("reviews");
-
-    console.log(campground.reviews);
-
     res.render("campgrounds/show", { campground });
 }));
 
@@ -96,7 +104,7 @@ app.delete("/campgrounds/:id", catchAsync(async (req, res, next) => {
 }));
 
 // Add review 
-app.post("/campgrounds/:id/reviews", catchAsync(async (req, res) => {
+app.post("/campgrounds/:id/reviews", validateReview, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     const review = new Review(req.body.review);
