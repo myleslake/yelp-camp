@@ -57,6 +57,7 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+// Catch all
 app.all("*", (req, res, next) => {
     next(new AppError(404, "Page Not Found"));
 });
